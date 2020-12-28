@@ -27,7 +27,7 @@ app.get("/lol", async (req, res) => {
 
 app.get("/getAppleLoginUrl", async (req, res) => {
   const stringifiedParams = queryString.stringify({
-    client_id: "com.opleg.eg.app",
+    client_id: "com.login.test.eg.app",
     redirect_uri: `https://${req.get("host")}/api/auth/apple`,
     scope: ["email", "name"].join(" "),
     response_type: "code id_token",
