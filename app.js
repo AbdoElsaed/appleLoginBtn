@@ -3,6 +3,7 @@ const helmet = require("helmet");
 const cors = require("cors");
 const path = require("path");
 const queryString = require("query-string");
+const {verifyIdToken: verifyAppleIdToken} = require("apple-signin-auth");
 
 const app = express();
 
@@ -41,7 +42,19 @@ app.get("/getAppleLoginUrl", async (req, res) => {
 });
 
 app.post('/api/auth/apple', async (req, res) => {
-  return res.send(req.body);
+  const { code, id_token, user = {} } = req.body;
+  const { email, name: { firstName, lastName } = {} } = user
+
+  const { sub: userAppleId } = await verifyAppleIdToken(
+    id_token,
+    {
+      audience: 'com.login.test.eg.app',
+      ignoreExpiration: true,
+    }
+  );
+
+  const data = {...req.body, userAppleId}
+  res.send(data);
 })
 
 app.listen(env.PORT, () => console.log(`app is running on port ${env.PORT}`));
