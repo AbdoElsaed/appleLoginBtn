@@ -44,7 +44,7 @@ app.post('/apple/redirect', async (req, res) => {
   const { sub: userAppleId } = await verifyAppleIdToken(
     id_token,
     {
-      audience: process.env.serviceID,
+      audience: process.env.SERVICE_ID,
       ignoreExpiration: true,
     }
   );
