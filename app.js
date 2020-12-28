@@ -24,7 +24,7 @@ app.options("*", cors());
 
 app.get("/getAppleLoginUrl", async (req, res) => {
   const stringifiedParams = queryString.stringify({
-    client_id: process.env.serviceID,
+    client_id: 'com.oauth.test.eg.app',
     redirect_uri: `https://${req.get("host")}/apple/redirect`,
     scope: ["email", "name"].join(" "),
     response_type: "code id_token",
@@ -44,7 +44,7 @@ app.post('/apple/redirect', async (req, res) => {
   const { sub: userAppleId } = await verifyAppleIdToken(
     id_token,
     {
-      audience: process.env.SERVICE_ID,
+      audience: 'com.oauth.test.eg.app',
       ignoreExpiration: true,
     }
   );
