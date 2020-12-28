@@ -40,4 +40,8 @@ app.get("/getAppleLoginUrl", async (req, res) => {
   res.send({ appleLoginUrl });
 });
 
+app.post('/api/auth/apple', async (req, res) => {
+  return res.send(req.body);
+})
+
 app.listen(env.PORT, () => console.log(`app is running on port ${env.PORT}`));
