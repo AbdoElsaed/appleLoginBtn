@@ -22,14 +22,10 @@ app.use(cors());
 app.options("*", cors());
 
 
-app.get("/lol", async (req, res) => {
-  res.send("fuck off!");
-});
-
 app.get("/getAppleLoginUrl", async (req, res) => {
   const stringifiedParams = queryString.stringify({
-    client_id: "com.oauth.test.eg.app",
-    redirect_uri: `https://${req.get("host")}/api/auth/apple`,
+    client_id: process.env.serviceID,
+    redirect_uri: `https://${req.get("host")}/apple/redirect`,
     scope: ["email", "name"].join(" "),
     response_type: "code id_token",
     state: "",
@@ -41,14 +37,14 @@ app.get("/getAppleLoginUrl", async (req, res) => {
   res.send({ appleLoginUrl });
 });
 
-app.post('/api/auth/apple', async (req, res) => {
+app.post('/apple/redirect', async (req, res) => {
   const { code, id_token, user = {} } = req.body;
   const { email, name: { firstName, lastName } = {} } = user
 
   const { sub: userAppleId } = await verifyAppleIdToken(
     id_token,
     {
-      audience: 'com.oauth.test.eg.app',
+      audience: process.env.serviceID,
       ignoreExpiration: true,
     }
   );
