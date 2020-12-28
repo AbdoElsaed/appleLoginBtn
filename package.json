@@ -13,6 +13,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "engines": {
+    "node": "10.x"
+  },
   "keywords": [],
   "author": "Apdo Elsaed",
   "license": "MIT"
