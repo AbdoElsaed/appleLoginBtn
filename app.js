@@ -28,7 +28,7 @@ app.get("/lol", async (req, res) => {
 
 app.get("/getAppleLoginUrl", async (req, res) => {
   const stringifiedParams = queryString.stringify({
-    client_id: "com.opleg.auth.app",
+    client_id: "com.oauth.test.eg.app",
     redirect_uri: `https://${req.get("host")}/api/auth/apple`,
     scope: ["email", "name"].join(" "),
     response_type: "code id_token",
@@ -48,7 +48,7 @@ app.post('/api/auth/apple', async (req, res) => {
   const { sub: userAppleId } = await verifyAppleIdToken(
     id_token,
     {
-      audience: 'com.opleg.auth.app',
+      audience: 'com.oauth.test.eg.app',
       ignoreExpiration: true,
     }
   );
