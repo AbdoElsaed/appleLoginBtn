@@ -1,2 +1,2 @@
 # appleLoginBtn
-implementing apple login with node.js
+Login with apple button using node.js for web and mobile applications
