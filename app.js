@@ -1,7 +1,6 @@
 const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
-const path = require("path");
 const queryString = require("query-string");
 const {verifyIdToken: verifyAppleIdToken} = require("apple-signin-auth");
 
@@ -24,7 +23,7 @@ app.options("*", cors());
 
 app.get("/getAppleLoginUrl", async (req, res) => {
   const stringifiedParams = queryString.stringify({
-    client_id: 'com.oauth.test.eg.app',
+    client_id: env.CLIENT_ID,
     redirect_uri: `https://${req.get("host")}/apple/redirect`,
     scope: ["email", "name"].join(" "),
     response_type: "code id_token",
@@ -38,13 +37,14 @@ app.get("/getAppleLoginUrl", async (req, res) => {
 });
 
 app.post('/apple/redirect', async (req, res) => {
-  const { code, id_token, user = {} } = req.body;
-  const { email, name: { firstName, lastName } = {} } = user
+  const { code, id_token, user } = req.body;
+  const parsedUser = user ? JSON.parse(user) : {};
+  const { email, name: { firstName, lastName } = {} } = parsedUser
 
   const { sub: userAppleId } = await verifyAppleIdToken(
     id_token,
     {
-      audience: 'com.oauth.test.eg.app',
+      audience: env.CLIENT_ID,
       ignoreExpiration: true,
     }
   );
